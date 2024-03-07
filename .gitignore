@@ -5,3 +5,4 @@ data/*
 *.xlsx
 *.xls
 *.parquet
+__pycache__
