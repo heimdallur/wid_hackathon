@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import utils.modelutils as mu
 import shap
 
-model_ref = "experienced_any_public_w"
+model_ref = "experienced_any_public_wo"
 balance_target = False
 requested_balance = 0.5
 save = True
 
 # Read dataset
-df_model = pd.read_csv("data/demog_optional_experienced_public_w.csv")
+df_model = pd.read_csv("data/demog_optional_experienced_public_wo.csv")
 
 # Counts
 n_cases = len(df_model)

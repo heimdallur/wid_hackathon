@@ -1,5 +1,7 @@
 from conn_test import create_session
 import pandas as pd
+from sklearn.preprocessing import OrdinalEncoder
+import numpy as np
 
 
 session = create_session()
@@ -23,12 +25,14 @@ col_cats = set([c.lower().split("_")[0] + "_*"
 for cc in col_cats:
     print(cc)
 
+
 # Features
 col_feat_match = [c for c in df.columns
                   if c.startswith(("demog_", "optional"))
                   and "optionalreporting" not in c
                   and "_other" not in c
-                  and c != "optional"]
+                  and c != "optional"
+                  and "demog_age" not in c]
 
 df_feat = df[col_feat_match]
 
@@ -40,6 +44,15 @@ df_feat_proc = pd.concat([df[["id"]],
                           df_feat_ohe], axis=1)
 df_feat_proc.columns = ["".join(c for c in col if c.isalnum())
                         for col in df_feat_proc.columns]
+
+
+# Ordinal variables
+enc = OrdinalEncoder(encoded_missing_value=np.nan)
+df["demog_age_oe"] = enc.fit_transform(df[["demog_age"]].fillna("-1"))
+# enc.categories_
+df["demog_age_oe"].replace(0, np.nan, inplace=True)
+df_feat_ord = df[["demog_age_oe"]]
+
 
 # Target
 col_tgt_match = [c for c in df.columns
@@ -54,9 +67,12 @@ df["weight"] = df["respondent_weight"]
 df_weight = df[["weight"]]
 
 # Combine
-df_model = pd.concat([df_feat_proc, df_target, df_weight],
+df_model = pd.concat([df_feat_ord,
+                      df_feat_proc,
+                      df_target,
+                      df_weight],
                      axis=1)
 
 # Save feature set
-df_model.to_csv("data/demog_optional_experienced_public_w.csv",
+df_model.to_csv("data/demog_optional_experienced_public_wo.csv",
                 index=False)
