@@ -1,4 +1,6 @@
 import json
+from tabulate import tabulate
+from pprint import pprint
 from snowflake.snowpark.session import Session
 
 
@@ -11,9 +13,7 @@ def create_session():  # COMMENT: Create snowpark session
         "user": conn_config['WiD']['user'],
         "password": conn_config['WiD']['password'],
         "role": "WID_HACKER",
-        "warehouse": conn_config['WiD']['warehouse'],
-        # "database": conn_config['WiD']['database'],
-        # "schema": conn_config['WiD']['schema']
+        "warehouse": conn_config['WiD']['warehouse']
         }
 
     # COMMENT: Return session object
@@ -22,10 +22,9 @@ def create_session():  # COMMENT: Create snowpark session
 # COMMENT: Create session
 session = create_session()
 
+table = "WID_HACKATHON_PRIVATE_DATASETS.SURVEY_FEATURES.SAFETY_SURVEY_DATA"
+
 # COMMENT: Test connection
-res = session.sql("SHOW TABLES").collect()
+res = session.sql(f"SELECT NONREPORTREASON_PUBLIC_OTHER FROM {table} LIMIT").collect()
 
-for table in res:
-    print(table.name)
-
-
+print(tabulate(res))
