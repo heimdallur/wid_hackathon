@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 import utils.modelutils as mu
 import shap
 
-model_ref = "experienced_any_public"
+model_ref = "experienced_any_public_w"
 balance_target = False
 requested_balance = 0.5
 save = True
 
 # Read dataset
-df_model = pd.read_csv("data/demog_optional_experienced_public.csv")
+df_model = pd.read_csv("data/demog_optional_experienced_public_w.csv")
 
 # Counts
 n_cases = len(df_model)
@@ -28,14 +28,19 @@ print(f"Percentage of positive cases is {pos_pct:.1%}")
 
 # Train test split
 print("Creating train and test split of supplied data")
-X = df_model.drop(["id", "target"],
+X = df_model.drop(["id", "target", "weight"],
                   axis=1)
 y = df_model["target"]
+# w = df_model["weight"]
+
 (X_train, X_test,
- y_train, y_test) = train_test_split(X,
-                                     y,
-                                     test_size=0.3,
-                                     random_state=0)
+ y_train, y_test
+ #  ,w_train, w_test
+ ) = train_test_split(X,
+                      y,
+                      #   w,
+                      test_size=0.3,
+                      random_state=0)
 
 # Balance target?
 if balance_target:
@@ -58,6 +63,7 @@ model = lgb.LGBMClassifier(objective="binary")
 model.fit(
         X_train,
         y_train,
+        # sample_weight=w_train,
         eval_set=[(X_train, y_train), (X_test, y_test)],
         eval_metric=eval_metrics,
         callbacks=[lgb.early_stopping(10)]

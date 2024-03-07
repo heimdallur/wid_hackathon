@@ -49,9 +49,14 @@ df["target"] = df[col_tgt_match].notna().max(axis=1)
 df["target"] = df["target"].astype(int)
 df_target = df[["target"]]
 
+# Sample weights
+df["weight"] = df["respondent_weight"]
+df_weight = df[["weight"]]
+
 # Combine
-df_model = pd.concat([df_feat_proc, df_target], axis=1)
+df_model = pd.concat([df_feat_proc, df_target, df_weight],
+                     axis=1)
 
 # Save feature set
-df_model.to_csv("data/demog_optional_experienced_public.csv",
+df_model.to_csv("data/demog_optional_experienced_public_w.csv",
                 index=False)
