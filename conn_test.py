@@ -1,9 +1,9 @@
 import json
 from snowflake.snowpark.session import Session
 
+
 # COMMENT: Import login parameters
 conn_config = json.load(open('cfg/connection_params.json', 'r'))
-
 
 def create_session():  # COMMENT: Create snowpark session
     params = {
