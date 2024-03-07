@@ -1,1 +1,7 @@
 /cfg/connection_params.json
+results/*
+data/*
+*.csv
+*.xlsx
+*.xls
+*.parquet

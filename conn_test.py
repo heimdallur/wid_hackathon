@@ -19,13 +19,12 @@ def create_session():  # COMMENT: Create snowpark session
     # COMMENT: Return session object
     return Session.builder.configs(params).create()
 
+
 # COMMENT: Create session
-session = create_session()
+# session = create_session()
 
 # COMMENT: Test connection
-res = session.sql("SHOW TABLES").collect()
+# res = session.sql("SHOW TABLES").collect()
 
-for table in res:
-    print(table.name)
-
-
+# for table in res:
+#     print(table.name)
