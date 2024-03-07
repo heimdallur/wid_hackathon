@@ -1,0 +1,10 @@
+{
+    "WiD": {
+        "account": "uq46782.eu-west-2.aws",
+        "user": "",
+        "password": "",
+        "database": "SHOWFLAKE_SAMPLE_DATA",
+        "schema": "TPCH_SF1",
+        "warehouse": "WID_COMPUTE_WH"
+    }
+}
